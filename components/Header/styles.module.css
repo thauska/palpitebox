@@ -1,3 +1,7 @@
-.test {
-    background: red
+.wrapper {
+    @apply bg-gray-200 p-4 shadow-md;
+}
+
+.wrapper a {
+    @apply px-2 hover:underline; 
 }
