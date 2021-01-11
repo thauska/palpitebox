@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Link from 'next/link'
+import PageTitle from '../components/PageTitle'
 
 const Pesquisa = () => {
 
@@ -7,7 +7,7 @@ const Pesquisa = () => {
         Nome: '',
         Email: '',
         Whatsapp: '',
-        Nota: 5
+        Nota: 0
     })
 
     const notas = [0, 1, 2, 3, 4, 5]
@@ -42,7 +42,8 @@ const Pesquisa = () => {
     }
 
     return (
-        <div>
+        <div className="py-6">
+            <PageTitle title="Pesquisa" />
             <h1 className="text-center font-bold my-4 text-3xl">Críticas e sugestões</h1>
             <p className="text-center">
                 O restaurante X sempre busca por atender melhor seus clientes. <br />
