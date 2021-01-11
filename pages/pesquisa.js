@@ -6,8 +6,14 @@ const Pesquisa = () => {
     const [form, setForm] = useState({
         Nome: '',
         Email: '',
-        Whatsapp: ''
+        Whatsapp: '',
+        Nota: 5
     })
+
+    const notas = [0, 1, 2, 3, 4, 5]
+
+    const [success, setSuccess] = useState(false)
+    const [retorno, setRetorno] = useState({})
 
     const save = async () => {
 
@@ -18,7 +24,8 @@ const Pesquisa = () => {
             })
     
             const data = await response.json()
-            console.log(data)
+            setSuccess(true)
+            setRetorno(data)
         } catch (err) {
             
         }
@@ -26,8 +33,6 @@ const Pesquisa = () => {
     }
 
     const onChange = event => {
-        console.log(event.target.value)
-
         const value = event.target.value
         const key = event.target.name
         setForm(old => ({
@@ -43,19 +48,60 @@ const Pesquisa = () => {
                 O restaurante X sempre busca por atender melhor seus clientes. <br />
                 Por isso, estamos sempre abertos a ouvir a sua opinião.
             </p>
-            <div className="w-1/5 mx-auto">
-                <label className="font-bold">Seu nome:</label>
-                <input type="text" className="p-4 my-2 block shadow bg-blue-100 rounded" placeholder="Nome" onChange={onChange} name="Nome" value={form.Nome} />
-                <label className="font-bold">E-mail:</label>
-                <input type="text" className="p-4 my-2 block shadow bg-blue-100 rounded" placeholder="E-mail" onChange={onChange} name="Email" value={form.Email} />
-                <label className="font-bold">Whatsapp:</label>
-                <input type="text" className="p-4 my-2 block shadow bg-blue-100 rounded" placeholder="Whatsapp" onChange={onChange} name="Whatsapp" value={form.Whatsapp} />
-                <button className="bg-blue-400 px-12 py-4 font-bold rounded-xl hover:bg-blue-500" onClick={save}>Salvar</button>
+            { !success &&
+                <div className="w-1/4 mx-auto">
+                    <label className="font-bold">Seu nome:</label>
+                    <input type="text" className="p-4 my-2 block shadow bg-blue-100 rounded" placeholder="Nome" onChange={onChange} name="Nome" value={form.Nome} />
+                    <label className="font-bold">E-mail:</label>
+                    <input type="text" className="p-4 my-2 block shadow bg-blue-100 rounded" placeholder="E-mail" onChange={onChange} name="Email" value={form.Email} />
+                    <label className="font-bold">Whatsapp:</label>
+                    <input type="text" className="p-4 my-2 block shadow bg-blue-100 rounded" placeholder="Whatsapp" onChange={onChange} name="Whatsapp" value={form.Whatsapp} />
 
-                <pre>
-                    {JSON.stringify(form, null, 2)}
-                </pre>
-            </div>
+                    <div className="py-6">
+                        <label className="font-bold mb-2">Nota:</label>
+                        <div className="flex">
+                            {
+                                notas.map((nota, index) => {
+                                    return (
+                                        <div key={index} className="block w-1/6">
+                                            <label className="text-center">{nota}</label> <br />
+                                            <input type="radio" name="Nota" value={nota} onChange={onChange} />
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>  
+                    </div>
+
+                    <button className="bg-blue-400 px-12 py-4 font-bold rounded-xl hover:bg-blue-500" onClick={save}>Salvar</button>
+                </div>
+            }
+            { success &&
+                <div className="w-1/4 mx-auto">
+                    <p className="my-6 text-center bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" >Agradecemos sua contribuição</p>
+                    {
+                        retorno.showCupom && 
+                        <div className="text-center border p-4 mb-2"> 
+                            Seu cupom: <br />
+                            <span className="font-bold text-2xl">
+                                {retorno.Cupom}
+                            </span>
+                        </div>
+                    }
+                    {
+                        retorno.showCupom && 
+                        <div className="text-center border p-4 mb-4"> 
+                            <small className="font-bold block mb-2">
+                                {retorno.Promo}
+                            </small>
+                            <br />
+                            <span className="italic">
+                                Tire um print ou foto desta tela e apresente ao atendente.
+                            </span>
+                        </div>
+                    }
+                </div>
+            }
         </div>
     )
 }
